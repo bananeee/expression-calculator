@@ -1,46 +1,52 @@
 #include "calculator/parser.hpp"
 
-namespace expr
-{
+namespace expr {
 
-bool ExpressionCalculator::is_operator(char c) {
-    return this->precedence_.count(c);
-}
-
-bool ExpressionCalculator::is_digit(char c) {
-    return c >= '0' && c <= '9';
-}
-
-double ExpressionCalculator::evaluate(const std::string& expression) {
+double ExpressionCalculator::evaluate(std::string_view expression) {
     std::stack<char> operator_stack;
     std::stack<double> operand_stack;
 
+    Tokenizer tokenizer(expression);
 
-    for (const char& token: expression) {
-        if (is_digit(token)) {
-            operand_stack.push(token - '0');
-        } else if (is_operator(token)) {
-            while (!operator_stack.empty() && precedence_[operator_stack.top()] >= precedence_[token]) {
-                apply_operator(operator_stack, operand_stack);
-            }
+    while (true) {
+        Token token = tokenizer.nextToken();
+        if (token.type == TokenType::End) {
+            break;
+        }
 
-            operator_stack.push(token);
-        } else if (token == '(') {
-            operator_stack.push(token);
-        } else if (token == ')') {
-            while (!operator_stack.empty() && operator_stack.top() != '(') {
-                apply_operator(operator_stack, operand_stack);
-            }
-            if (!operator_stack.empty()) {
-                operator_stack.pop(); // Pop the '('
-            }
+        switch (token.type) {
+            case TokenType::Number:
+                operand_stack.push(token.value);
+                break;
+
+            case TokenType::Operator:
+                while (!operator_stack.empty() &&
+                       precedence_[operator_stack.top()] >= precedence_[token.op]) {
+                    apply_operator(operator_stack, operand_stack);
+                }
+                operator_stack.push(token.op);
+                break;
+
+            case TokenType::LeftParen:
+                operator_stack.push(token.op);
+                break;
+
+            case TokenType::RightParen:
+                while (!operator_stack.empty() && operator_stack.top() != '(') {
+                    apply_operator(operator_stack, operand_stack);
+                }
+                if (!operator_stack.empty()) {
+                    operator_stack.pop();
+                }
+                break;
+
         }
     }
 
     while (!operator_stack.empty()) {
         apply_operator(operator_stack, operand_stack);
     }
-    
+
     return operand_stack.top();
 }
 

@@ -6,6 +6,9 @@ After getting and calculation should continue serving other expressions from tha
 - [ ] Setup cmake project 
 - [ ] Implement TCP server (handle multiple clients concurrently)
 - [ ] Implement expression parser and calculator (supporting +, -, *, /, and brackets), ensuring it can handle large expressions (up to 1GB) efficiently 
+    - [ ] Implement simple parser
+    - [ ] Implement tokenizer
+    - [ ] Support stream processing
 - [ ] Write unit tests for expression parser and calculator
 - [ ] Write a generator for input test sequences
 - [ ] Create a README file with installation instructions, how to run tests, and how to run the application

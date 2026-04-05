@@ -20,6 +20,7 @@ target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
 
 add_library(calculator_lib STATIC
     src/calculator/parser.cpp
+    src/calculator/tokenizer.cpp
 )
 target_include_directories(calculator_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
