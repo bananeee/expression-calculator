@@ -9,10 +9,10 @@
 namespace expr {
 
 class ExpressionCalculator {
-   public:
+public:
     double evaluate(std::string_view expression);
 
-   private:
+private:
     void apply_operator(std::stack<char>& operator_stack,
                         std::stack<double>& operand_stack);
 

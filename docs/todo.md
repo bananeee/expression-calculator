@@ -14,3 +14,7 @@ After getting and calculation should continue serving other expressions from tha
 - [ ] Create a README file with installation instructions, how to run tests, and how to run the application
 - [ ] Optimize performance to ensure processing 1GB of expression takes no more than several minutes
 - [ ] Code is clean and well-documented
+
+## Bugs
+- [ ] Segmentation fault when put invalid text 
+- [ ] The result always in double format

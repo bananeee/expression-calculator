@@ -6,7 +6,7 @@
 namespace expr {
 
 class ParseError : public std::runtime_error {
-   public:
+public:
     using std::runtime_error::runtime_error;
 };
 
@@ -19,13 +19,13 @@ struct Token {
 };
 
 class Tokenizer {
-   public:
+public:
     explicit Tokenizer(std::string_view expression)
         : expression_(expression), pos_(0) {}
 
     Token nextToken();
 
-   private:
+private:
     std::string_view expression_;
     size_t pos_ = 0;
 };

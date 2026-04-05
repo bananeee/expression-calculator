@@ -21,7 +21,8 @@ double ExpressionCalculator::evaluate(std::string_view expression) {
 
             case TokenType::Operator:
                 while (!operator_stack.empty() &&
-                       precedence_[operator_stack.top()] >= precedence_[token.op]) {
+                       precedence_[operator_stack.top()] >=
+                           precedence_[token.op]) {
                     apply_operator(operator_stack, operand_stack);
                 }
                 operator_stack.push(token.op);

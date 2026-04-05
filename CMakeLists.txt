@@ -17,6 +17,8 @@ FetchContent_MakeAvailable(asio)
 add_library(asio INTERFACE)
 target_include_directories(asio INTERFACE ${asio_SOURCE_DIR}/asio/include)
 target_compile_definitions(asio INTERFACE ASIO_STANDALONE)
+find_package(Threads REQUIRED)
+target_link_libraries(asio INTERFACE Threads::Threads)
 
 add_library(calculator_lib STATIC
     src/calculator/parser.cpp
@@ -24,5 +26,12 @@ add_library(calculator_lib STATIC
 )
 target_include_directories(calculator_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
+add_library(server_lib STATIC
+    src/server/worker.cpp
+    src/server/server.cpp
+)
+target_include_directories(server_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_link_libraries(server_lib PUBLIC asio calculator_lib)
+
 add_executable(expression_calculator src/main.cpp)
-target_link_libraries(expression_calculator PRIVATE calculator_lib)
+target_link_libraries(expression_calculator PRIVATE server_lib)
