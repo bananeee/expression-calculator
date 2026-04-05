@@ -21,30 +21,41 @@ double ExpressionCalculator::evaluate(std::string_view expression) {
 
             case TokenType::Operator:
                 while (!operator_stack.empty() &&
-                       precedence_[operator_stack.top()] >=
-                           precedence_[token.op]) {
+                       operator_stack.top() != '(' &&
+                       precedence_[operator_stack.top()] >= precedence_[token.op]) {
                     apply_operator(operator_stack, operand_stack);
                 }
                 operator_stack.push(token.op);
                 break;
 
             case TokenType::LeftParen:
-                operator_stack.push(token.op);
+                operator_stack.push('(');
                 break;
 
             case TokenType::RightParen:
                 while (!operator_stack.empty() && operator_stack.top() != '(') {
                     apply_operator(operator_stack, operand_stack);
                 }
-                if (!operator_stack.empty()) {
-                    operator_stack.pop();
+                if (operator_stack.empty()) {
+                    throw ParseError("Mismatched parentheses");
                 }
+                operator_stack.pop();
+                break;
+
+            case TokenType::End:
                 break;
         }
     }
 
     while (!operator_stack.empty()) {
+        if (operator_stack.top() == '(') {
+            throw ParseError("Mismatched parentheses");
+        }
         apply_operator(operator_stack, operand_stack);
+    }
+
+    if (operand_stack.empty() || operand_stack.size() != 1) {
+        throw ParseError("Malformed expression");
     }
 
     return operand_stack.top();
@@ -52,6 +63,10 @@ double ExpressionCalculator::evaluate(std::string_view expression) {
 
 void ExpressionCalculator::apply_operator(std::stack<char>& operator_stack,
                                           std::stack<double>& operand_stack) {
+    if (operand_stack.size() < 2) {
+        throw ParseError("Malformed expression");
+    }
+
     char op = operator_stack.top();
     operator_stack.pop();
 
@@ -62,18 +77,11 @@ void ExpressionCalculator::apply_operator(std::stack<char>& operator_stack,
 
     double result;
     switch (op) {
-        case '+':
-            result = left + right;
-            break;
-        case '-':
-            result = left - right;
-            break;
-        case '*':
-            result = left * right;
-            break;
-        case '/':
-            result = left / right;
-            break;
+        case '+': result = left + right; break;
+        case '-': result = left - right; break;
+        case '*': result = left * right; break;
+        case '/': result = left / right; break;
+        default:  throw ParseError("Unknown operator");
     }
     operand_stack.push(result);
 }

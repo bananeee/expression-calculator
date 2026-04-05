@@ -16,7 +16,14 @@ void Worker::read() {
 
                 try {
                     double result = parser_.evaluate(expression);
-                    write(std::to_string(result) + "\n");
+                    long long int_val = static_cast<long long>(result);
+                    std::string formatted;
+                    if (result == static_cast<double>(int_val)) {
+                        formatted = std::to_string(int_val);
+                    } else {
+                        formatted = std::to_string(result);
+                    }
+                    write(formatted + "\n");
                 } catch (const ParseError& e) {
                     write("Error: " + std::string(e.what()) + "\n");
                 }
