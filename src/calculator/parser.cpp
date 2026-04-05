@@ -39,7 +39,6 @@ double ExpressionCalculator::evaluate(std::string_view expression) {
                     operator_stack.pop();
                 }
                 break;
-
         }
     }
 
@@ -50,7 +49,8 @@ double ExpressionCalculator::evaluate(std::string_view expression) {
     return operand_stack.top();
 }
 
-void ExpressionCalculator::apply_operator(std::stack<char>& operator_stack, std::stack<double>& operand_stack) {
+void ExpressionCalculator::apply_operator(std::stack<char>& operator_stack,
+                                          std::stack<double>& operand_stack) {
     char op = operator_stack.top();
     operator_stack.pop();
 
@@ -61,13 +61,20 @@ void ExpressionCalculator::apply_operator(std::stack<char>& operator_stack, std:
 
     double result;
     switch (op) {
-        case '+': result = left + right; break;
-        case '-': result = left - right; break;
-        case '*': result = left * right; break;
-        case '/': result = left / right; break;
+        case '+':
+            result = left + right;
+            break;
+        case '-':
+            result = left - right;
+            break;
+        case '*':
+            result = left * right;
+            break;
+        case '/':
+            result = left / right;
+            break;
     }
     operand_stack.push(result);
 }
 
-
-} // namespace expr
+}  // namespace expr

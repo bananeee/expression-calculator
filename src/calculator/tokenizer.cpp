@@ -43,4 +43,4 @@ Token Tokenizer::nextToken() {
     throw ParseError("Invalid character: " + std::string(1, current));
 }
 
-} // namespace expr
+}  // namespace expr

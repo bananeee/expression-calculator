@@ -1,24 +1,21 @@
 #pragma once
 
-#include "calculator/tokenizer.hpp"
-
 #include <map>
-#include <string_view>
 #include <stack>
+#include <string_view>
+
+#include "calculator/tokenizer.hpp"
 
 namespace expr {
 
 class ExpressionCalculator {
-public:
+   public:
     double evaluate(std::string_view expression);
 
-private:
+   private:
+    void apply_operator(std::stack<char>& operator_stack,
+                        std::stack<double>& operand_stack);
 
-    void apply_operator(std::stack<char>& operator_stack, std::stack<double>& operand_stack);
-
-    std::map<char, int> precedence_{
-        {'+', 1}, {'-', 1},
-        {'*', 2}, {'/', 2}    
-    };
+    std::map<char, int> precedence_{{'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}};
 };
-} // namespace expr
+}  // namespace expr
