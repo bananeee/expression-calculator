@@ -10,11 +10,11 @@ namespace expr {
 
 class ExpressionCalculator {
 public:
-    double evaluate(std::string_view expression);
+    long long evaluate(std::string_view expression);
 
 private:
     void apply_operator(std::stack<char>& operator_stack,
-                        std::stack<double>& operand_stack);
+                        std::stack<long long>& operand_stack);
 
     std::map<char, int> precedence_{{'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}};
 };

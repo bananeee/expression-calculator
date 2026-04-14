@@ -17,7 +17,7 @@ Token Tokenizer::nextToken() {
     char current = expression_[pos_];
 
     if (isdigit(current)) {
-        double value = 0;
+        long long value = 0;
         while (pos_ < expression_.size() && isdigit(expression_[pos_])) {
             value = value * 10 + (expression_[pos_] - '0');
             pos_++;

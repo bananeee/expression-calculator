@@ -14,7 +14,7 @@ enum class TokenType { Number, Operator, LeftParen, RightParen, End };
 
 struct Token {
     TokenType type;
-    double value = 0;
+    long long value = 0;
     char op = '\0';
 };
 

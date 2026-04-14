@@ -2,9 +2,9 @@
 
 namespace expr {
 
-double ExpressionCalculator::evaluate(std::string_view expression) {
+long long ExpressionCalculator::evaluate(std::string_view expression) {
     std::stack<char> operator_stack;
-    std::stack<double> operand_stack;
+    std::stack<long long> operand_stack;
 
     Tokenizer tokenizer(expression);
 
@@ -62,7 +62,7 @@ double ExpressionCalculator::evaluate(std::string_view expression) {
 }
 
 void ExpressionCalculator::apply_operator(std::stack<char>& operator_stack,
-                                          std::stack<double>& operand_stack) {
+                                          std::stack<long long>& operand_stack) {
     if (operand_stack.size() < 2) {
         throw ParseError("Malformed expression");
     }
@@ -70,17 +70,22 @@ void ExpressionCalculator::apply_operator(std::stack<char>& operator_stack,
     char op = operator_stack.top();
     operator_stack.pop();
 
-    double right = operand_stack.top();
+    long long right = operand_stack.top();
     operand_stack.pop();
-    double left = operand_stack.top();
+    long long left = operand_stack.top();
     operand_stack.pop();
 
-    double result;
+    long long result;
     switch (op) {
         case '+': result = left + right; break;
         case '-': result = left - right; break;
         case '*': result = left * right; break;
-        case '/': result = left / right; break;
+        case '/':
+            if (right == 0) {
+                throw ParseError("Division by zero");
+            }
+            result = left / right;
+            break;
         default:  throw ParseError("Unknown operator");
     }
     operand_stack.push(result);

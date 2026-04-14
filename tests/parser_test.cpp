@@ -48,3 +48,8 @@ TEST(ParserTest, ThrowsOnUnmatchedCloseParen) {
     ExpressionCalculator calc;
     EXPECT_THROW(calc.evaluate("1+2)"), ParseError);
 }
+
+TEST(ParserTest, ThrowsOnDivisionByZero) {
+    ExpressionCalculator calc;
+    EXPECT_THROW(calc.evaluate("5/0"), ParseError);
+}

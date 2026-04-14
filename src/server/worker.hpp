@@ -1,6 +1,8 @@
 #pragma once
 
 #include <asio.hpp>
+#include <chrono>
+#include <iostream>
 #include <memory>
 #include <string>
 
@@ -20,7 +22,9 @@ private:
 
     asio::ip::tcp::socket socket_;
     asio::streambuf buffer_;
-    ExpressionCalculator parser_;
+    ExpressionCalculator calculator_;
+    std::chrono::steady_clock::time_point read_start_;
+
     static constexpr char DELIMITER = '\n';
 };
 }  // namespace expr
